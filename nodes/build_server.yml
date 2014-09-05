@@ -1,0 +1,18 @@
+
+id: build-server
+name: Build Server
+type: server
+
+provider: 
+  name: {{ provider.name }}
+  size: {{ provider.size }}
+
+services:
+  nodejs: '*'
+
+configuration:
+  nodejs:
+    packages:
+      - bower
+      - gulp
+

@@ -1,0 +1,53 @@
+
+id: gh-pages-build
+name: GitHub Pages (gh-pages) Build
+type: task
+
+targets:
+  - build-server
+
+vars:
+  dir: /opt/{{ trigger.payload.repository.name }}
+  build: _site
+  temp: /tmp/build
+  repo: {{ git_url }}
+  ref: refs/heads/metalsmith
+  dest: master
+  
+triggers:
+  webhooks:
+    - path: {{ webhook_uri  }}
+
+steps:
+  # Hack to ensure we're building only when the right branch is updated
+  - run: devops scripts/filter.sh
+    options:
+      EXPECTED: "{{ ref }}"
+      VALUE: "{{ trigger.payload.ref }}"
+  
+  # Fetch our updates
+  - run: devops git update
+    options:
+      repo: "{{ repo }}"
+      dest: "{{ dir }}"
+      version: "{{ ref }}"
+  
+  # Build the site
+  - run: cd {{ dir }} && make build && git stash save
+  
+  # We copy the result of our build over to a temporary folder
+  - run: rm -Rf {{ temp }} && cd {{ dir }} && cp -a {{ build }} {{ temp }}
+
+  # We switch to `gh-pages` and trash its content
+  - run: cd {{ dir }} && git checkout {{ dest }} && git rm -r --ignore-unmatch * 
+  
+  # We switch to `gh-pages` and trash its content
+  - run: cd {{ dir }} && cp -a {{ temp }}/* .
+  
+  # We switch to `gh-pages` and trash its content
+  - run: > 
+      cd {{ dir }} && 
+      git add . && 
+      git commit -am "Build triggered by commit {{ trigger.payload.after }} from {{ trigger.payload.head_commit.author.username }}" && 
+      git push origin {{ dest }}
+
