@@ -14,7 +14,3 @@ vars:
     label: Server size
     default: 66
     description: Size of the server you will deploy your app on, see http://docs.devo.ps/providers/digitalocean/
-  webhook_url:
-    label: WebHook URL
-    default: build-gh-page
-    description: The URL you want Github to sends its notification (https://wh.devo.ps/{user}/{repo}/{webhook_url})

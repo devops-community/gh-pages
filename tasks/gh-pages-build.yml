@@ -16,7 +16,7 @@ vars:
   
 triggers:
   webhooks:
-    - path: "{{ webhook_uri }}"
+    - path: rebuild/my/site
 
 steps:
   # Hack to ensure we're building only when the right branch is updated
