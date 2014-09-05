@@ -11,8 +11,8 @@ vars:
   build: _site
   temp: /tmp/build
   repo: "{{ git_url }}"
-  ref: refs/heads/metalsmith
-  dest: master
+  ref: refs/heads/master
+  dest: gh-pages
   
 triggers:
   webhooks:
