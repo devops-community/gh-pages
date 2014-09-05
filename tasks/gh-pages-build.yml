@@ -10,13 +10,13 @@ vars:
   dir: /opt/{{ trigger.payload.repository.name }}
   build: _site
   temp: /tmp/build
-  repo: {{ git_url }}
+  repo: "{{ git_url }}"
   ref: refs/heads/metalsmith
   dest: master
   
 triggers:
   webhooks:
-    - path: {{ webhook_uri  }}
+    - path: "{{ webhook_uri }}"
 
 steps:
   # Hack to ensure we're building only when the right branch is updated

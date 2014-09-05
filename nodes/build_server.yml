@@ -4,11 +4,11 @@ name: Build Server
 type: server
 
 provider: 
-  name: {{ provider.name }}
-  size: {{ provider.size }}
+  name: "{{ provider.name }}"
+  size: "{{ provider.size }}"
 
 services:
-  nodejs: '*'
+  nodejs: "*"
 
 configuration:
   nodejs:
